@@ -52,9 +52,16 @@
   };
 
   # Add stuff for your user as you see fit:
+  programs.neovim.enable = true;
   programs.vscode.enable = true;
   programs.firefox.enable = true;
-  home.packages = with pkgs; [gnumake];
+  home.packages = with pkgs; [gnumake pavucontrol swww tofi];
+
+  programs.kitty.enable = true;
+  wayland.windowManager.hyprland.settings = {
+    "$mod" = "SUPER";
+  };
+  programs.waybar.enable = true;
 
   programs.spicetify = let
     spicePkgs = inputs.spicetify-nix.legacyPackages.${pkgs.system};
