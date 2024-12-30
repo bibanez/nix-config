@@ -15,6 +15,7 @@
 
     # Or modules exported from other flakes (such as nix-colors):
     # inputs.nix-colors.homeManagerModules.default
+    inputs.spicetify-nix.homeManagerModules.default
 
     # You can also split up your configuration and import pieces of it here:
     # ./nvim.nix
@@ -53,7 +54,14 @@
   # Add stuff for your user as you see fit:
   programs.vscode.enable = true;
   programs.firefox.enable = true;
-  home.packages = with pkgs; [spotify gnumake];
+  home.packages = with pkgs; [gnumake];
+
+  programs.spicetify = let
+    spicePkgs = inputs.spicetify-nix.legacyPackages.${pkgs.system};
+  in {
+    enable = true;
+    theme = spicePkgs.themes.onepunch;
+  };
 
   # Enable home-manager and git
   programs.home-manager.enable = true;
