@@ -19,6 +19,7 @@
 
     # You can also split up your configuration and import pieces of it here:
     # ./nvim.nix
+    ./waybar.nix
   ];
 
   nixpkgs = {
@@ -137,7 +138,6 @@
     };
   };
   services.mako.enable = true;
-  programs.waybar.enable = true;
   programs.tofi = {
     enable = true;
     settings = {
