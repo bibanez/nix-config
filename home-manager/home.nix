@@ -73,6 +73,7 @@
         primary-color = "#ff7800";
         secondary-color = "#000000";
       };
+      "org/gnome/desktop/applications/terminal".exec = "ghostty";
     };
   };
 
@@ -187,19 +188,17 @@
     "text/xml" = ["firefox.desktop"];
     "x-scheme-handler/http" = ["firefox.desktop"];
     "x-scheme-handler/https" = ["firefox.desktop"];
+    "x-scheme-handler/terminal" = ["ghostty.desktop"];
   };
 
   home.packages = with pkgs; [
     gnumake
     pavucontrol
-    swww
-    wofi
     playerctl
     insync
     calibre
     signal-desktop
     adw-gtk3
-
     # nerd fonts
     (nerdfonts.override {
       fonts = [
@@ -208,6 +207,7 @@
         "IosevkaTerm"
       ];
     })
+    pkgs.unstable.ghostty
   ];
 
   # Fonts
