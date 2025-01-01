@@ -139,10 +139,14 @@
     gamescopeSession.enable = true;
   };
 
+  # Shell
+  programs.fish.enable = true;
+
   users.users = {
     bibanez = {
       initialPassword = "passwd";
       isNormalUser = true;
+      shell = pkgs.fish;
       openssh.authorizedKeys.keys = [
         # TODO: Add your SSH public key(s) here, if you plan on using SSH to connect
       ];

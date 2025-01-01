@@ -56,6 +56,7 @@
   programs.neovim.enable = true;
   programs.vscode.enable = true;
   programs.firefox.enable = true;
+  programs.zathura.enable = true;
   home.packages = with pkgs; [
     gnumake
     pavucontrol
@@ -63,6 +64,9 @@
     wofi
     playerctl
     xfce.thunar
+    insync
+    calibre
+    signal-desktop
 
     # nerd fonts
     (nerdfonts.override {
@@ -79,10 +83,25 @@
 
   programs.kitty.enable = true;
 
+  # Shell
+  programs.fish.enable = true;
+  programs.starship = {
+    enable = true;
+  };
+
+  # Direnv
+  programs = {
+    direnv = {
+      enable = true;
+      nix-direnv.enable = true;
+    };
+  };
+
   # Hyprland
   wayland.windowManager.hyprland = {
     enable = true;
     systemd.enable = false;
+    xwayland.enable = true;
     settings = {
       "$mod" = "SUPER";
       "$menu" = "tofi-drun --drun-launch=true";
