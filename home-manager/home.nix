@@ -55,7 +55,25 @@
 
   dconf = {
     enable = true;
-    settings."org/gnome/desktop/interface".color-scheme = "prefer-dark";
+    settings = {
+      "org/gnome/desktop/interface" = {
+        color-scheme = "prefer-dark";
+        gtk-theme = "adw-gtk3-dark";
+      };
+      "org/gnome/desktop/background" = {
+        color-shading-type = "solid";
+        picture-options = "zoom";
+        picture-uri = "file:///run/current-system/sw/share/backgrounds/gnome/amber-l.jxl";
+        picture-uri-dark = "file:///run/current-system/sw/share/backgrounds/gnome/amber-d.jxl";
+        primary-color = "#ff7800";
+        secondary-color = "#000000";
+      };
+      "org/gnome/desktop/screensaver" = {
+        picture-uri = "file:///run/current-system/sw/share/backgrounds/gnome/amber-l.jxl";
+        primary-color = "#ff7800";
+        secondary-color = "#000000";
+      };
+    };
   };
 
   # Add stuff for your user as you see fit:
@@ -177,10 +195,10 @@
     swww
     wofi
     playerctl
-    #xfce.thunar
     insync
     calibre
     signal-desktop
+    adw-gtk3
 
     # nerd fonts
     (nerdfonts.override {
@@ -194,8 +212,6 @@
 
   # Fonts
   fonts.fontconfig.enable = true;
-
-  programs.kitty.enable = true;
 
   # Shell
   programs.fish.enable = true;
@@ -211,109 +227,22 @@
     };
   };
 
-  # Hyprland
-  wayland.windowManager.hyprland = {
-    enable = false;
-    systemd.enable = false;
-    xwayland.enable = true;
-    settings = {
-      "$mod" = "SUPER";
-      "$menu" = "tofi-drun --drun-launch=true";
-      bindm = [
-        "$mod, mouse:272, movewindow"
-        "$mod, mouse:273, resizewindow"
-        "$mod ALT, mouse:272, resizewindow"
-      ];
-      bindle = [
-        ", XF86AudioRaiseVolume, exec, wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 5%+"
-        ", XF86AudioLowerVolume, exec, wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 5%-"
-      ];
-      bindl = [
-        # media controls
-        ", XF86AudioPlay, exec, playerctl play-pause"
-        ", XF86AudioPrev, exec, playerctl previous"
-        ", XF86AudioNext, exec, playerctl next"
-
-        # volume
-        ", XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
-        ", XF86AudioMicMute, exec, wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"
-      ];
-      bind =
-        [
-          "$mod, F, exec, firefox"
-          "$mod, T, exec, kitty"
-          "$mod SHIFT, Q, killactive"
-          "$mod, D, exec, $menu"
-        ]
-        ++ (
-          # Workspaces
-          builtins.concatLists (builtins.genList (
-              x: let
-                ws = let
-                  c = (x + 1) / 10;
-                in
-                  builtins.toString (x + 1 - (c * 10));
-              in [
-                "$mod, ${ws}, workspace, ${toString (x + 1)}"
-                "$mod SHIFT, ${ws}, movetoworkspace, ${toString (x + 1)}"
-              ]
-            )
-            10)
-        );
-      input = {
-        kb_layout = "us,es";
-        kb_options = "grp:win_space_toggle";
-      };
-      exec-once = [
-        "waybar"
-        "hyprctl setcursor Bibata-Modern-Classic 24"
-      ];
-    };
-  };
-  services.mako.enable = true;
-  programs.tofi = {
-    enable = true;
-    settings = {
-      width = "100%";
-      height = "100%";
-      border-width = 0;
-      outline-width = 0;
-      padding-left = "35%";
-      padding-top = "35%";
-      result-spacing = 25;
-      num-results = 5;
-      font = "monospace";
-      background-color = "#000A";
-    };
-  };
-
   # GTK
-  home.pointerCursor = {
-    gtk.enable = false;
-    package = pkgs.bibata-cursors;
-    name = "Bibata-Modern-Classic";
-    size = 24;
-  };
-
   gtk = {
     enable = false;
-
-    theme = {
-      package = pkgs.flat-remix-gtk;
-      name = "Flat-Remix-GTK-Grey-Darkest";
+    gtk3.extraConfig = {
+      Settings = ''
+        gtk-application-prefer-dark-theme=1
+      '';
     };
-
-    iconTheme = {
-      package = pkgs.adwaita-icon-theme;
-      name = "Adwaita";
-    };
-
-    font = {
-      name = "Sans";
-      size = 11;
+    gtk4.extraConfig = {
+      Settings = ''
+        gtk-application-prefer-dark-theme=1
+      '';
     };
   };
 
+  # Spicetify
   programs.spicetify = let
     spicePkgs = inputs.spicetify-nix.legacyPackages.${pkgs.system};
   in {
