@@ -60,8 +60,111 @@
   # Add stuff for your user as you see fit:
   programs.neovim.enable = true;
   programs.vscode.enable = true;
-  programs.firefox.enable = true;
-  programs.zathura.enable = true;
+
+  # Add Firefox GNOME theme directory
+  home.file.".mozilla/firefox/nix-user-profile/chrome/firefox-gnome-theme".source = inputs.firefox-gnome-theme;
+  programs.firefox = {
+    enable = true;
+    package = pkgs.firefox.override {cfg.enableTridactylNative = true;};
+    profiles.nix-user-profile = {
+      search = {
+        force = true;
+        default = "DuckDuckGo";
+      };
+      userChrome = ''
+        @import "firefox-gnome-theme/userChrome.css";
+      '';
+      userContent = ''
+        @import "firefox-gnome-theme/userContent.css";
+      '';
+      settings = {
+        ## Firefox gnome theme ## - https://github.com/rafaelmardojai/firefox-gnome-theme/blob/7cba78f5216403c4d2babb278ff9cc58bcb3ea66/configuration/user.js
+        # (copied into here because home-manager already writes to user.js)
+        "toolkit.legacyUserProfileCustomizations.stylesheets" = true; # Enable customChrome.cs
+        "browser.uidensity" = 0; # Set UI density to normal
+        "svg.context-properties.content.enabled" = true; # Enable SVG context-propertes
+
+        # Disable irritating first-run stuff
+        "browser.disableResetPrompt" = true;
+        "browser.download.panel.shown" = true;
+        "browser.feeds.showFirstRunUI" = false;
+        "browser.messaging-system.whatsNewPanel.enabled" = false;
+        "browser.rights.3.shown" = true;
+        "browser.shell.checkDefaultBrowser" = false;
+        "browser.shell.defaultBrowserCheckCount" = 1;
+        "browser.startup.homepage_override.mstone" = "ignore";
+        "browser.uitour.enabled" = false;
+        "startup.homepage_override_url" = "";
+        "trailhead.firstrun.didSeeAboutWelcome" = true;
+        "browser.bookmarks.restore_default_bookmarks" = false;
+        "browser.bookmarks.addedImportButton" = true;
+
+        # Don't ask for download dir
+        "browser.download.useDownloadDir" = false;
+
+        # Disable crappy home activity stream page
+        "browser.newtabpage.activity-stream.feeds.topsites" = false;
+        "browser.newtabpage.activity-stream.showSponsoredTopSites" = false;
+        "browser.newtabpage.activity-stream.improvesearch.topSiteSearchShortcuts" = false;
+        "browser.newtabpage.blocked" = lib.genAttrs [
+          # Youtube
+          "26UbzFJ7qT9/4DhodHKA1Q=="
+          # Facebook
+          "4gPpjkxgZzXPVtuEoAL9Ig=="
+          # Wikipedia
+          "eV8/WsSLxHadrTL1gAxhug=="
+          # Reddit
+          "gLv0ja2RYVgxKdp0I5qwvA=="
+          # Amazon
+          "K00ILysCaEq8+bEqV/3nuw=="
+          # Twitter
+          "T9nJot5PurhJSy8n038xGA=="
+        ] (_: 1);
+
+        # Disable some telemetry
+        "app.shield.optoutstudies.enabled" = false;
+        "browser.discovery.enabled" = false;
+        "browser.newtabpage.activity-stream.feeds.telemetry" = false;
+        "browser.newtabpage.activity-stream.telemetry" = false;
+        "browser.ping-centre.telemetry" = false;
+        "datareporting.healthreport.service.enabled" = false;
+        "datareporting.healthreport.uploadEnabled" = false;
+        "datareporting.policy.dataSubmissionEnabled" = false;
+        "datareporting.sessions.current.clean" = true;
+        "devtools.onboarding.telemetry.logged" = false;
+        "toolkit.telemetry.archive.enabled" = false;
+        "toolkit.telemetry.bhrPing.enabled" = false;
+        "toolkit.telemetry.enabled" = false;
+        "toolkit.telemetry.firstShutdownPing.enabled" = false;
+        "toolkit.telemetry.hybridContent.enabled" = false;
+        "toolkit.telemetry.newProfilePing.enabled" = false;
+        "toolkit.telemetry.prompted" = 2;
+        "toolkit.telemetry.rejected" = true;
+        "toolkit.telemetry.reportingpolicy.firstRun" = false;
+        "toolkit.telemetry.server" = "";
+        "toolkit.telemetry.shutdownPingSender.enabled" = false;
+        "toolkit.telemetry.unified" = false;
+        "toolkit.telemetry.unifiedIsOptIn" = false;
+        "toolkit.telemetry.updatePing.enabled" = false;
+
+        # Disable fx accounts
+        "identity.fxaccounts.enabled" = false;
+        # Disable "save password" prompt
+        "signon.rememberSignons" = false;
+        # Harden
+        "privacy.trackingprotection.enabled" = true;
+        "dom.security.https_only_mode" = true;
+      };
+    };
+  };
+
+  xdg.mimeApps.defaultApplications = {
+    "text/html" = ["firefox.desktop"];
+    "text/xml" = ["firefox.desktop"];
+    "x-scheme-handler/http" = ["firefox.desktop"];
+    "x-scheme-handler/https" = ["firefox.desktop"];
+  };
+
   home.packages = with pkgs; [
     gnumake
     pavucontrol
