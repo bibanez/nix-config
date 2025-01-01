@@ -100,11 +100,16 @@
   };
 
   # Enable display manager
-  services.displayManager.ly.enable = true;
+  #services.displayManager.ly.enable = true;
+  services.xserver = {
+    enable = true;
+    displayManager.gdm.enable = true;
+    desktopManager.gnome.enable = true;
+  };
 
   # Enable Hyprland
-  programs.hyprland.enable = true;
-  environment.sessionVariables.NIXOS_OZONE_WL = "1";
+  #programs.hyprland.enable = true;
+  #environment.sessionVariables.NIXOS_OZONE_WL = "1";
 
   # Fonts
   fonts.fontDir.enable = true;

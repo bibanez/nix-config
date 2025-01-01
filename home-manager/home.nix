@@ -19,7 +19,7 @@
 
     # You can also split up your configuration and import pieces of it here:
     # ./nvim.nix
-    ./waybar.nix
+    # ./waybar.nix
   ];
 
   nixpkgs = {
@@ -52,6 +52,11 @@
     homeDirectory = "/home/bibanez";
   };
 
+  dconf = {
+    enable = true;
+    settings."org/gnome/desktop/interface".color-scheme = "prefer-dark";
+  };
+
   # Add stuff for your user as you see fit:
   programs.neovim.enable = true;
   programs.vscode.enable = true;
@@ -63,7 +68,7 @@
     swww
     wofi
     playerctl
-    xfce.thunar
+    #xfce.thunar
     insync
     calibre
     signal-desktop
@@ -99,7 +104,7 @@
 
   # Hyprland
   wayland.windowManager.hyprland = {
-    enable = true;
+    enable = false;
     systemd.enable = false;
     xwayland.enable = true;
     settings = {
@@ -175,14 +180,14 @@
 
   # GTK
   home.pointerCursor = {
-    gtk.enable = true;
+    gtk.enable = false;
     package = pkgs.bibata-cursors;
     name = "Bibata-Modern-Classic";
     size = 24;
   };
 
   gtk = {
-    enable = true;
+    enable = false;
 
     theme = {
       package = pkgs.flat-remix-gtk;
@@ -204,7 +209,7 @@
     spicePkgs = inputs.spicetify-nix.legacyPackages.${pkgs.system};
   in {
     enable = true;
-    theme = spicePkgs.themes.text;
+    theme = spicePkgs.themes.default;
   };
 
   # Enable home-manager and git
