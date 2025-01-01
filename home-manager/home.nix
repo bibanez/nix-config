@@ -32,6 +32,7 @@
 
       # You can also add overlays exported from other flakes:
       # neovim-nightly-overlay.overlays.default
+      inputs.nur.overlays.default
 
       # Or define it inline, for example:
       # (final: prev: {
@@ -65,12 +66,17 @@
   home.file.".mozilla/firefox/nix-user-profile/chrome/firefox-gnome-theme".source = inputs.firefox-gnome-theme;
   programs.firefox = {
     enable = true;
-    package = pkgs.firefox.override {cfg.enableTridactylNative = true;};
+    nativeMessagingHosts = [pkgs.tridactyl-native];
     profiles.nix-user-profile = {
       search = {
         force = true;
         default = "DuckDuckGo";
       };
+      extensions = with pkgs.nur.repos.rycee.firefox-addons; [
+        ublock-origin
+        tridactyl
+        bitwarden
+      ];
       userChrome = ''
         @import "firefox-gnome-theme/userChrome.css";
       '';
