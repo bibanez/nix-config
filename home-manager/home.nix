@@ -82,6 +82,9 @@
         run-in-background = "true";
         optional-plugins = "['sent-sound']";
       };
+      "org/gnome/shell" = {
+        favorite-apps = "['firefox.desktop', 'com.mitchellh.ghostty.desktop', 'spotify.desktop', 'org.gnome.Nautilus.desktop', 'code.desktop', 'org.gnome.Geary.desktop', 'org.gnome.Calendar.desktop', 'org.gnome.Music.desktop']";
+      };
     };
   };
 
