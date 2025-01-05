@@ -74,6 +74,14 @@
         secondary-color = "#000000";
       };
       "org/gnome/desktop/applications/terminal".exec = "ghostty";
+      "org/gnome/settings-daemon/plugins/color" = {
+        night-light-enabled = "true";
+        night-light-temperature = "3700";
+      };
+      "org/gnome/geary" = {
+        run-in-background = "true";
+        optional-plugins = "['sent-sound']";
+      };
     };
   };
 
@@ -95,6 +103,7 @@
         ublock-origin
         tridactyl
         bitwarden
+        zotero-connector
       ];
       userChrome = ''
         @import "firefox-gnome-theme/userChrome.css";
@@ -199,6 +208,9 @@
     calibre
     signal-desktop
     adw-gtk3
+    errands
+    zotero
+    bottles
     # nerd fonts
     (nerdfonts.override {
       fonts = [
