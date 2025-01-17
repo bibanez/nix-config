@@ -6,3 +6,11 @@ home: home-manager/home.nix fmt
 
 system: nixos/configuration.nix fmt
 	sudo nixos-rebuild switch --flake .#nixos
+
+update:
+	nix flake update
+
+optimise:
+	nix-store --optimise
+
+all: update home system optimise

@@ -55,7 +55,7 @@
 
   dconf = {
     enable = true;
-    settings = {
+    settings = with lib.hm.gvariant; {
       "org/gnome/desktop/interface" = {
         color-scheme = "prefer-dark";
         gtk-theme = "adw-gtk3-dark";
@@ -75,15 +75,28 @@
       };
       "org/gnome/desktop/applications/terminal".exec = "ghostty";
       "org/gnome/settings-daemon/plugins/color" = {
-        night-light-enabled = "true";
+        night-light-enabled = true;
         night-light-temperature = "3700";
       };
       "org/gnome/geary" = {
-        run-in-background = "true";
-        optional-plugins = "['sent-sound']";
+        run-in-background = true;
+        optional-plugins = ["sent-sound"];
       };
       "org/gnome/shell" = {
-        favorite-apps = "['firefox.desktop', 'com.mitchellh.ghostty.desktop', 'spotify.desktop', 'org.gnome.Nautilus.desktop', 'code.desktop', 'org.gnome.Geary.desktop', 'org.gnome.Calendar.desktop', 'org.gnome.Music.desktop']";
+        favorite-apps = [
+          "firefox.desktop"
+          "com.mitchellh.ghostty.desktop"
+          "spotify.desktop"
+          "org.gnome.Nautilus.desktop"
+          "code.desktop"
+          "org.gnome.Geary.desktop"
+          "org.gnome.Calendar.desktop"
+          "org.gnome.Music.desktop"
+        ];
+      };
+      "org/gnome/desktop/input-sources" = {
+        sources = [(mkTuple ["xkb" "es"]) (mkTuple ["xkb" "us"])];
+        xkb-options = ["terminate:ctrl_alt_bksp"];
       };
     };
   };
@@ -214,6 +227,9 @@
     errands
     zotero
     bottles
+
+    vesktop # Discord client that supports wayland
+
     # nerd fonts
     (nerdfonts.override {
       fonts = [
@@ -222,6 +238,12 @@
         "IosevkaTerm"
       ];
     })
+
+    # libreoffice
+    libreoffice-fresh # gtk
+    hunspell
+    hunspellDicts.es_ES
+
     pkgs.unstable.ghostty
   ];
 

@@ -71,6 +71,8 @@
         modules = [
           # > Our main nixos configuration file <
           ./nixos/configuration.nix
+          # Import your generated (nixos-generate-config) hardware configuration
+          ./nixos/hardware-configuration-pc.nix
         ];
       };
     };
